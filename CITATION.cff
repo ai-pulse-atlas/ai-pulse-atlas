@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "引用本项目时请使用以下信息，并注明所用数据日期。"
+title: "AI Pulse Atlas"
+authors:
+  - name: "ai-pulse-atlas contributors"
+version: 0.1.0
+date-released: '2026-10-26'
+url: "https://pulse.daowuu.work"
+license: CC-BY-4.0
+type: dataset
+abstract: "按影响力分级、可追溯官方来源的 AI 行业事件开放数据集与可视化。"

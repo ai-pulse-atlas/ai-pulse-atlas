@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 安全问题、下架请求与行为准则举报
+    url: https://github.com/ai-pulse-atlas/ai-pulse-atlas/security
+    about: 请勿公开提交 Issue。通过 GitHub 私密漏洞报告（Report a vulnerability）提交，详见 SECURITY.md。
+  - name: 分级规则
+    url: https://github.com/ai-pulse-atlas/ai-pulse-atlas/blob/main/docs/grading.md
+    about: 提交前请先阅读 S/A/B/C 分级标准与硬规则。

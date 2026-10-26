@@ -1,0 +1,37 @@
+name: 分类/实体建议
+description: 建议新增机构、机构别名或子类
+title: "[分类/实体] "
+labels: ["taxonomy-entity", "needs-triage"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 建议类型
+      options:
+        - 新增机构
+        - 新增机构或模型别名
+        - 新增子类
+        - 调整子类
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: 对象
+      description: 机构标准名，或所属大类（模型 / 算力硬件 / 产品应用 / 研究 / 产业资本 / 政策安全 / 开源社区）
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 具体建议
+      description: 例如要新增的别名、子类名称及含义
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: 理由与示例
+      description: 为什么需要；可列出受影响或将受益的事件 id、参考链接
+    validations:
+      required: true

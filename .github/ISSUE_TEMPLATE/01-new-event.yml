@@ -1,0 +1,99 @@
+name: 新事件
+description: 提交一条尚未收录的 AI 行业事件
+title: "[新事件] "
+labels: ["new-event", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先搜索已有 Issue 和 `data/events/`，避免重复。标题和摘要须**自写**，不要复制原文句子。
+  - type: input
+    id: event_date
+    attributes:
+      label: 事件日期
+      description: 北京时间，格式 YYYY-MM-DD
+      placeholder: "2026-10-26"
+    validations:
+      required: true
+  - type: input
+    id: orgs
+    attributes:
+      label: 机构
+      description: 多个用逗号分隔；尽量使用 data/entities.yaml 中的标准名
+      placeholder: "OpenAI, Microsoft"
+    validations:
+      required: true
+  - type: input
+    id: title
+    attributes:
+      label: 标题
+      description: 自写的中文标题
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: 一句话摘要
+      description: 自写，不超过 150 字；可引用官方产品名、模型名和数字指标
+    validations:
+      required: true
+  - type: input
+    id: official_url
+    attributes:
+      label: 官方链接
+      description: 官方博客、公告、更新日志或发布说明的链接
+      placeholder: "https://"
+    validations:
+      required: true
+  - type: textarea
+    id: other_sources
+    attributes:
+      label: 其他来源（可选）
+      description: 媒体或社区链接，每行一个，并注明发布方（publisher）
+    validations:
+      required: false
+  - type: dropdown
+    id: category
+    attributes:
+      label: 建议分类
+      description: 子类见 data/taxonomy.yaml，可在补充说明中注明
+      options:
+        - 模型
+        - 算力硬件
+        - 产品应用
+        - 研究
+        - 产业资本
+        - 政策安全
+        - 开源社区
+        - 不确定
+    validations:
+      required: true
+  - type: dropdown
+    id: impact
+    attributes:
+      label: 建议分级
+      description: 见 docs/grading.md；没有官方原文的事件最高 B；拿不准就降一级
+      options:
+        - S
+        - A
+        - B
+        - C
+        - 不确定
+    validations:
+      required: true
+  - type: textarea
+    id: impact_reason
+    attributes:
+      label: 分级理由
+      description: 一句话说明为什么是这个级别
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 标题和摘要为自写，未复制原文句子
+          required: true
+        - label: 已搜索，未发现重复事件
+          required: true

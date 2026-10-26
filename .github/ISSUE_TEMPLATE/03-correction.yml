@@ -1,0 +1,41 @@
+name: 更正/撤回
+description: 报告事实错误、链接失效或重复条目
+title: "[更正] "
+labels: ["correction", "needs-triage"]
+body:
+  - type: input
+    id: event_id
+    attributes:
+      label: 事件 id
+      placeholder: "2026-10-01-cloudflare-clef"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 问题类型
+      options:
+        - 事实错误
+        - 链接失效
+        - 重复条目
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: 问题说明
+      description: 哪个字段有误、应改为什么；重复条目请给出另一条的 id
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 证据链接（可选）
+      description: 每行一个链接
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: |
+        权利人的下架请求请勿在此公开提交，请通过 GitHub 私密漏洞报告提交：https://github.com/ai-pulse-atlas/ai-pulse-atlas/security

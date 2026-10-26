@@ -1,0 +1,10 @@
+build/
+node_modules/
+site/dist/
+site/.astro/
+__pycache__/
+*.py[cod]
+.DS_Store
+.venv/
+.env
+.env.*

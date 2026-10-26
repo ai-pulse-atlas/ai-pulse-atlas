@@ -1,0 +1,42 @@
+# AI 动态汇总 · 分类体系（一级 7 类，二级若干）
+# 事件 JSONL 中 category / subcategory 直接写这里的中文名，校验脚本按此文件检查。
+version: 1
+categories:
+  - name: 模型
+    key: model
+    subcategories: [旗舰与基础模型, 开源权重, 多模态, 推理与Agent能力, 评测与榜单]
+  - name: 算力硬件
+    key: compute
+    subcategories: [芯片, 数据中心与云算力, 端侧设备, 供应链与出口管制]
+  - name: 产品应用
+    key: product
+    subcategories: [消费级产品, 开发者工具与API, 企业应用, Agent产品]
+  - name: 研究
+    key: research
+    subcategories: [新方法与论文, 安全与对齐研究]
+  - name: 产业资本
+    key: industry
+    subcategories: [融资并购, 人事变动, 合作, 财报]
+  - name: 政策安全
+    key: policy
+    subcategories: [监管法规, 诉讼与版权, 安全事故]
+  - name: 开源社区
+    key: opensource
+    subcategories: [爆火项目, 框架与基础设施]
+
+enums:
+  impact: [S, A, B, C]
+  verified: [official, confirmed, rumor]   # official=官方发布；confirmed=多家可信媒体证实但无官方原文；rumor=单一来源/消息人士
+  source_type: [official, media, community]
+  region: [US, CN, EU, Global]
+  status: [announced, preview, rolling_out, ga, completed, withdrawn, ongoing]
+  date_basis: [official_bj, official_local, hn_bj, media_bj]
+
+# 聚合型来源（更新日志、发布说明等）可以同时支撑多条事件，URL 去重时豁免
+shared_sources:
+  - https://ai.google.dev/gemini-api/docs/changelog
+  - https://docs.claude.com/en/release-notes/overview
+  - https://docs.mistral.ai/getting-started/changelog
+  - https://docs.x.ai/docs/release-notes
+  - https://www.alibabacloud.com/help/en/model-studio/newly-released-models
+  - https://api-docs.deepseek.com/news/

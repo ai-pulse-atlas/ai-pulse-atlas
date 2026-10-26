@@ -1,0 +1,53 @@
+name: 定级争议
+description: 对已收录事件的影响力等级提出异议
+title: "[定级争议] "
+labels: ["grading-dispute", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        维护者会在 7 天内依据 docs/grading.md 裁决；规则覆盖不到时用四维兜底打分。
+        S 级的升降须由人类维护者批准。同一事件 30 天内不再受理重复争议。
+  - type: input
+    id: event_id
+    attributes:
+      label: 事件 id
+      placeholder: "2026-10-01-cloudflare-clef"
+    validations:
+      required: true
+  - type: dropdown
+    id: current_impact
+    attributes:
+      label: 当前分级
+      options:
+        - S
+        - A
+        - B
+        - C
+    validations:
+      required: true
+  - type: dropdown
+    id: proposed_impact
+    attributes:
+      label: 主张的分级
+      options:
+        - S
+        - A
+        - B
+        - C
+    validations:
+      required: true
+  - type: textarea
+    id: grading_clause
+    attributes:
+      label: 依据的 grading.md 条款
+      description: 引用具体条款（如分级表中的某一行、硬性规则或兜底打分）
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 证据链接
+      description: 每行一个链接，并简要说明
+    validations:
+      required: true

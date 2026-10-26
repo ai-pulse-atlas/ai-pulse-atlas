@@ -1,0 +1,22 @@
+{
+  "schema_version": "1-0-0",
+  "schema": "https://pulse.daowuu.work/schema/event-1-0-0.json",
+  "license": "CC-BY-4.0",
+  "encoding": "UTF-8",
+  "format": "jsonl",
+  "files": [
+    {
+      "path": "data/events/2026-09.jsonl",
+      "events": 8
+    },
+    {
+      "path": "data/events/2026-10.jsonl",
+      "events": 70
+    }
+  ],
+  "supporting_files": [
+    "data/taxonomy.yaml",
+    "data/entities.yaml"
+  ],
+  "event_count": 78
+}

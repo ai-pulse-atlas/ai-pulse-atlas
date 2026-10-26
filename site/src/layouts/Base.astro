@@ -1,0 +1,9 @@
+---
+import '../styles/global.css';
+const { title = 'AI Pulse Atlas', description = '按影响力分级、可追溯官方来源的 AI 行业事件开放数据集与可视化' } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width" /><meta name="description" content={description} /><title>{title} · AI Pulse Atlas</title><link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} /></head>
+<body><header><a class="brand" href="/">AI PULSE <span>ATLAS</span></a><nav aria-label="主导航"><a href="/">事件图谱</a><a href="/about/">关于与投稿</a><a href="/data/events.json">下载 JSON</a></nav></header><main><slot /></main><footer>开放记录 · 有据可循<br />数据与项目自写文字 CC BY 4.0 · 代码 MIT · <a href="/about/">许可与引用说明</a></footer></body>
+</html>

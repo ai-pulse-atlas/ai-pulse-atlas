@@ -26,7 +26,7 @@ const radius = {S:9,A:7,B:5,C:3.5};
 <section class="panel" aria-labelledby="timeline-heading">
   <div class="section-heading"><div><p class="eyebrow">01 / 时间脉络</p><h2 id="timeline-heading">分类泳道时间线</h2></div><label class="toggle" id="timeline-control" hidden><input id="show-all" type="checkbox"/>显示全部等级（含 B/C）</label></div>
   <p class="muted">每条泳道对应一个分类。悬停、聚焦或点击圆点查看详情；横向滚动浏览日期。</p>
-  <div class="grade-legend">{grades.map(grade => <span><svg width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r={radius[grade]} style={`fill:var(--grade-${grade})`}/></svg>{grade} 级 · {events.filter(e => e.impact===grade).length}</span>)}<span id="timeline-count" aria-live="polite">当前显示 {events.filter(e => ['S','A'].includes(e.impact)).length} 条</span></div>
+  <div class="grade-legend">{grades.map(grade => <span><svg width="22" height="22" aria-hidden="true"><circle cx="11" cy="11" r={radius[grade]} style={`fill:var(--grade-${grade})`}/></svg>{grade} 级 · {events.filter(e => e.impact===grade).length}</span>)}<span id="timeline-count" aria-live="polite">当前显示 {events.length} 条</span></div>
   <div class="timeline-scroll" tabindex="0" role="region" aria-label="可横向滚动的分类时间线">
     <svg class="lane-chart" viewBox={`0 0 ${width} ${bottom+8}`} style={`min-width:${Math.max(760,width*.76)}px`} aria-label="按日期与分类排列的事件">
       {lanes.map((lane,i) => <rect x="0" y={lane.top} width={width} height={lane.height} class:list={['lane-background',{'alternate':i%2===0}]}/>)}

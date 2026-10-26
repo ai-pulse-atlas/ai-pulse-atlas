@@ -1,6 +1,6 @@
 ---
 import GradeBadge from './GradeBadge.astro';
-import { credibility, sourceTypes, type EventRecord } from '../lib/presentation';
+import { credibility, sourceTypes, statusLabel, type EventRecord } from '../lib/presentation';
 interface Props { event: EventRecord }
 const { event: e } = Astro.props;
 ---
@@ -8,5 +8,5 @@ const { event: e } = Astro.props;
   <div class="event-meta"><time datetime={e.event_date}>{e.event_date.slice(0,10)}</time><GradeBadge grade={e.impact}/><span>{e.category} · {e.subcategory}</span></div>
   <h3><a href={`/events/${e.id}/`}>{e.title}</a></h3><p>{e.summary}</p>
   <div class="event-meta muted"><span>{e.orgs.join('、')}</span><span class="credibility" data-verified={e.verified}>{credibility[e.verified]}</span>{e.sources[0] && <a href={e.sources[0].url} rel="noopener nofollow" target="_blank">{e.sources[0].publisher} ↗</a>}</div>
-  <details><summary>定级理由与完整记录</summary><div class="record"><dl><dt>定级理由</dt><dd>{e.impact_reason}</dd><dt>全部来源</dt><dd><ul>{e.sources.map(s => <li><a href={s.url} rel="noopener nofollow" target="_blank">{s.publisher} ↗</a> · {sourceTypes[s.type] ?? s.type}</li>)}</ul></dd><dt>相关模型</dt><dd>{e.models?.join('、') || '未标注'}</dd><dt>状态</dt><dd>{e.status || '未标注'}</dd>{(e.impact_history?.length ?? 0) > 0 && <><dt>分级调整记录</dt><dd><ul>{e.impact_history.map(h => <li>{h.at} · {h.from} → {h.to}：{h.reason}</li>)}</ul></dd></>}</dl><a href={`/events/${e.id}/`}>打开独立页 →</a></div></details>
+  <details><summary>定级理由与完整记录</summary><div class="record"><dl><dt>定级理由</dt><dd>{e.impact_reason}</dd><dt>全部来源</dt><dd><ul>{e.sources.map(s => <li><a href={s.url} rel="noopener nofollow" target="_blank">{s.publisher} ↗</a> · {sourceTypes[s.type] ?? s.type}</li>)}</ul></dd><dt>相关模型</dt><dd>{e.models?.join('、') || '未标注'}</dd><dt>状态</dt><dd>{statusLabel(e.status) || '未标注'}</dd>{(e.impact_history?.length ?? 0) > 0 && <><dt>分级调整记录</dt><dd><ul>{e.impact_history.map(h => <li>{h.at} · {h.from} → {h.to}：{h.reason}</li>)}</ul></dd></>}</dl><a href={`/events/${e.id}/`}>打开独立页 →</a></div></details>
 </li>

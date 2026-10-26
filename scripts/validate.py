@@ -25,6 +25,61 @@ def norm_url(u):
     return u.rstrip("/").lower()
 
 
+def check_impact_history(ev) -> list[str]:
+    """检查分级调整记录，不修改事件或读取外部状态。"""
+    errors = []
+    tag = f"[{ev.get('id', '?')}] impact_history"
+    history = ev.get("impact_history", [])
+    if not isinstance(history, list):
+        return [f"{tag} 必须是数组"]
+    required = ("from", "to", "at", "reason")
+    allowed = {*required, "ref", "by"}
+    previous_time = None
+    for i, record in enumerate(history, 1):
+        label = f"{tag} 第 {i} 条"
+        if not isinstance(record, dict):
+            errors.append(f"{label} 必须是对象")
+            previous_time = None
+            continue
+        for field in required:
+            if field not in record:
+                errors.append(f"{label} 缺少必填字段 {field}")
+        for field in record:
+            if field not in allowed:
+                errors.append(f"{label} 未知字段 {field}")
+        for field in ("from", "to"):
+            if field in record and record[field] not in ("S", "A", "B", "C"):
+                errors.append(f"{label} {field} 必须是 S/A/B/C")
+        if "reason" in record and (not isinstance(record["reason"], str) or not record["reason"]):
+            errors.append(f"{label} reason 必须是非空字符串")
+        if "ref" in record and (not isinstance(record["ref"], str) or not URL_RE.fullmatch(record["ref"])):
+            errors.append(f"{label} ref 必须是 http:// 或 https:// URL（不含空白）")
+        if "by" in record and record["by"] not in ("maintainer", "bot", "community"):
+            errors.append(f"{label} by 必须是 maintainer/bot/community")
+        current_time = None
+        if "at" in record:
+            value = record["at"]
+            try:
+                if not isinstance(value, str) or not TS_RE.fullmatch(value):
+                    raise ValueError
+                current_time = dt.datetime.fromisoformat(value)
+                if current_time.utcoffset() != dt.timedelta(hours=8):
+                    raise ValueError
+            except ValueError:
+                errors.append(f"{label} at 必须是有效的北京时间（ISO 时间，时区 +08:00）")
+                current_time = None
+        if previous_time is not None and current_time is not None and current_time <= previous_time:
+            errors.append(f"{label} at 必须严格晚于上一条（严格升序）")
+        previous_time = current_time
+        if i > 1 and isinstance(history[i - 2], dict):
+            previous = history[i - 2]
+            if "to" in previous and "from" in record and previous["to"] != record["from"]:
+                errors.append(f"{label} from 必须等于上一条 to（首尾相接）")
+        if i == len(history) and "to" in record and record["to"] != ev.get("impact"):
+            errors.append(f"{label} 最后一条 to 必须等于事件当前 impact")
+    return errors
+
+
 def main():
     strict = "--strict" in sys.argv
     checker = FormatChecker()
@@ -49,6 +104,8 @@ def main():
         where = f"{f.name}:{ln}"
         if exc:
             errors.append(f"{where} JSON 解析失败：{exc}"); continue
+        if isinstance(ev, dict):
+            errors.extend(f"{where} {error}" for error in check_impact_history(ev))
         schema_errors = list(validator.iter_errors(ev))
         if schema_errors:
             for error in schema_errors:
@@ -124,9 +181,6 @@ def main():
             urls.setdefault(nu, eid)
         if ev.get("verified") == "official" and not has_official_src:
             errors.append(f"{tag} verified=official 但没有 type=official 的来源")
-        for h in ev.get("impact_history", []) or []:
-            if not isinstance(h, dict) or h.get("from") not in en["impact"] or h.get("to") not in en["impact"] or not h.get("reason"):
-                errors.append(f"{tag} impact_history 条目需含 from/to/at/reason：{h}")
         if eid in ids:
             errors.append(f"{tag} id 重复（首次出现于 {ids[eid]}）")
         ids[eid] = where

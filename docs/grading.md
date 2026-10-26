@@ -14,7 +14,7 @@
 1. **非官方确认的事件最高 B**：`verified` 不是 `official` 时，`impact` 只能是 B 或 C（校验脚本强制检查）。
 2. **拿不准就降一级**。
 3. 每条事件必须写 `impact_reason`，一句话说明为什么是这个级别。
-4. 级别调整不删旧值：把旧级别、时间、原因追加进 `impact_history[]`，再改 `impact`。
+4. 级别调整不删旧值，追加到 `impact_history[]`：必填 `from`、`to`（S/A/B/C）、`at`（有效北京时间，ISO 格式且时区为 `+08:00`）、`reason`（非空字符串）；可选 `ref`（http:// 或 https:// 链接，不含空白）、`by`（maintainer/bot/community），禁止未知字段。记录按 `at` 严格升序（不得同时间），相邻记录上一条 `to` 等于下一条 `from`，末条 `to` 等于当前 `impact`；校验脚本强制检查。
 
 ## 兜底打分（标准表覆盖不到时）
 

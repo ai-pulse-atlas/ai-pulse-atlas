@@ -258,9 +258,21 @@
           "reason": {
             "type": "string",
             "minLength": 1
+          },
+          "ref": {
+            "type": "string",
+            "pattern": "^https?://\\S+$"
+          },
+          "by": {
+            "enum": [
+              "maintainer",
+              "bot",
+              "community"
+            ]
           }
         }
-      }
+      },
+      "description": "按 at 严格升序，相邻记录上一条 to 等于下一条 from，末条 to 等于事件 impact；跨记录规则由校验脚本强制检查。"
     }
   },
   "allOf": [

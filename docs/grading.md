@@ -67,6 +67,71 @@
 4. `impact_reason` 用一句话写明 Cap、Scale 和关键证据（榜单名次或可用范围），例如 `Cap4(LMArena Text #1)+Scale3(API GA+付费端全量)`。
 5. **临时级与复核**：发布当日按当时可得证据定级；证据不足时在 `impact_reason` 或 `note` 中注明 `provisional`，并在 `note` 写 `review_due`（预览或无独立榜单为事件日 +7 天，开源权重与采用数据为 +30 天）。复核后级别有变，改 `impact` 并按硬性规则第 4 条追加 `impact_history`，不改历史条目；`reason` 写明 Cap/Scale 依据，有证据链接时填 `ref`。
 
+
+### 行业影响事后升级（Impact 信号）
+
+行业影响 / 格局变化通常在发布后才显现，所以不参与发布当日的矩阵初算，只作为可核对的事后调整。
+
+- **发布当日只算 Cap×Scale**；Impact 只在事件日 **+30**（优先查 U / D / O）和 **+90**（补查 F 跟进与用量是否持续）复核时使用。
+- Impact 不替代 Cap×Scale：矩阵结果是基线，Impact 在基线上调整 `impact`，并追加 `impact_history`。
+
+#### 信号与门槛
+
+须能链到公开页面；仅有媒体传闻或证据不足时不触发。
+
+| 信号 | 门槛 | 拿不准时 |
+|---|---|---|
+| **F 跟进** | **≥3 家**头部/主流厂商在官方公告或技术报告中明确对标、跟进同一路线或产品形态 | 只有 2 家、措辞含糊或只有媒体报道 → 不触发 |
+| **U 用量** | OpenRouter **周榜 token 份额进入 Top 5**；或相对发布前基线周份额 **阶跃 ≥ +5 个百分点，且连续 ≥2 个完整周**维持 | 单日暴涨不算。`reason` 须标明「OpenRouter 流量」（不是全球份额）；`:free` / batch 等变体可合并计入同一模型族，但须在 `reason` 中注明 |
+| **D 默认** | 至少 1 个主流消费端产品或主流 IDE / Agent（如 ChatGPT、Claude.ai、Gemini、GitHub Copilot、Cursor）以官方 changelog 或设置说明将其设为**默认** | 只是「推荐」、不是 default → 不触发 |
+| **O 开源生态** | 仅限开源权重：HF base 模型 **30 天下载 ≥ 50 万**；或可归因衍生模型（微调 / 量化 / GGUF 等明确声明 base）**≥ 50 个** | 口径不清或多为无关 fork → 不触发；闭源模型不适用 |
+
+满足 ≥1 类信号即可触发；满足 ≥2 类独立信号记为 Strong Impact，只提高置信度、优先排入复核，**不跨级**。
+
+#### 调整规则
+
+1. **每次复核最多升或降一级**（C→B、B→A、A→S），可经多次复核升到 **S**。
+2. Impact **可以突破矩阵上限**（例如矩阵得 A、有 U 信号 → 可升 S）。
+3. **预览硬顶仍然有效**：仍是 `preview` / `announced` 或仅对受信开放时，Impact 也不能升到 S（最高 A）。
+4. **信号消失**：需**连续两个复核点**都确认已不达标才降一级；拿不准就**不降**。
+5. 未到复核窗口或证据不足：维持原级，可在 `note` 记录「已查、未触发」。
+
+#### `impact_history` 示例
+
+bot 复核升级（U 信号）：
+
+```json
+{
+  "impact": "A",
+  "impact_reason": "基线 Cap2×Scale2=B；+30 Impact(U)：OpenRouter 周榜 token Top5 且连续两周，升一级 → A",
+  "impact_history": [
+    {
+      "from": "B",
+      "to": "A",
+      "at": "2026-11-16T10:00:00+08:00",
+      "reason": "Impact(U)：OpenRouter 流量周榜 token 份额进入 Top5（模型族合并 free/batch），连续两周；覆盖矩阵 B→A；已 GA，预览硬顶不适用",
+      "ref": "https://openrouter.ai/rankings",
+      "by": "bot"
+    }
+  ]
+}
+```
+
+maintainer 手动升级（F + D 信号）：
+
+```json
+{
+  "from": "A",
+  "to": "S",
+  "at": "2026-12-29T18:00:00+08:00",
+  "reason": "Impact(F+D)：≥3 家头部厂商官方跟进同路线，且 Cursor 设为默认；+90 复核升一级 A→S",
+  "ref": "https://example.com/vendor-follow-on-announcement",
+  "by": "maintainer"
+}
+```
+
+`ref` 须为真实可访问的官方或榜单链接；第二个示例中的 `ref` 只示意格式，实际落库时换成查证过的链接。
+
 ## 兜底打分（非模型类，标准表覆盖不到时）
 
 四个维度各 0–3 分，合计：

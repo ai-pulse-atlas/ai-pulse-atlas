@@ -4,7 +4,7 @@ import { credibility, sourceTypes, statusLabel, type EventRecord } from '../lib/
 interface Props { event: EventRecord }
 const { event: e } = Astro.props;
 ---
-<li class="event" data-impact={e.impact} data-category={e.category} data-orgs={JSON.stringify(e.orgs)} data-search={[e.title,e.summary,e.subcategory,...e.orgs,...(e.models ?? [])].join(' ').toLowerCase()}>
+<li id={"e-"+e.id} class="event" data-impact={e.impact} data-category={e.category} data-orgs={JSON.stringify(e.orgs)} data-search={[e.title,e.summary,e.subcategory,...e.orgs,...(e.models ?? [])].join(' ').toLowerCase()}>
   <div class="event-meta"><time datetime={e.event_date}>{e.event_date.slice(0,10)}</time><GradeBadge grade={e.impact}/><span>{e.category} · {e.subcategory}</span></div>
   <h3><a href={`/events/${e.id}/`}>{e.title}</a></h3><p>{e.summary}</p>
   <div class="event-meta muted"><span>{e.orgs.join('、')}</span><span class="credibility" data-verified={e.verified}>{credibility[e.verified]}</span>{e.sources[0] && <a href={e.sources[0].url} rel="noopener nofollow" target="_blank">{e.sources[0].publisher} ↗</a>}</div>

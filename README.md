@@ -96,7 +96,7 @@ npm run build                                # 会先自动运行 ../scripts/bui
 
 ## 引用
 
-TODO：补充 `CITATION.cff` 后在此给出引用格式。
+引用格式见仓库根目录的 [`CITATION.cff`](CITATION.cff)；使用固定版本时请注明数据 tag（如 `data-2026.10`）。
 
 ## 许可证
 

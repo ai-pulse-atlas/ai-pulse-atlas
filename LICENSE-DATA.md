@@ -22,7 +22,7 @@
 
 > 数据来源：AI 动态汇总（ai-pulse-atlas），<https://github.com/ai-pulse-atlas/ai-pulse-atlas>，CC BY 4.0
 
-如使用固定版本，请注明数据 tag（如 `data-2026.10`）。TODO：补充 `CITATION.cff` 后改为引用该文件。
+如使用固定版本，请注明数据 tag（如 `data-2026.10`）。完整引用信息见仓库根目录的 [`CITATION.cff`](CITATION.cff)。
 
 ## 免责声明
 

@@ -47,7 +47,7 @@
 - 只改 `data/events/` 下一个月份文件。
 - 本地运行 `python3 scripts/validate.py --strict`，零错误、零告警。
 - 来源为官方，或已注明 `verified` 与 `publisher`。
-- CI 会检查：`validate.py --strict` 与 JSON Schema 校验、id 唯一、URL 归一化去重、±3 天疑似重复（WARN，由维护者确认）、新增链接可达性（只告警不阻断）、文本长度、防泄漏检查。
+- CI 会检查：`validate.py --strict` 与 JSON Schema 校验、id 唯一、URL 归一化去重、±3 天疑似重复（WARN，由维护者确认）、文本长度、防泄漏检查。暂未启用链接可达性检查。
 - 外部 PR 至少需要 1 个审批且 CI 通过才能合并。
 
 ## 维护

@@ -9,7 +9,7 @@
 
 ### 新增
 
-- 首发数据：回填 2026-09-26 至 2026-10-26 共 78 条事件（S 1 / A 21 / B 52 / C 4）。TODO：发布前完成 strict 校验和 S/A 级人工抽查后确认条数。
+- 首发数据：回填 2026-09-26 至 2026-10-26 共 78 条事件（S 1 / A 19 / B 54 / C 4，已通过 strict 校验和 S/A 级人工抽查）。
 - 分类体系 `data/taxonomy.yaml`（version 1，7 大类）、实体表 `data/entities.yaml`、分级规则 `docs/grading.md`。
 - 事件 JSON Schema `schema/event.schema.json`（JSON Schema 2020-12）。初始版本 `1-0-0`。
 - 校验与构建脚本 `scripts/validate.py`、`scripts/build.py`、防泄漏检查 `scripts/export_check.py`。

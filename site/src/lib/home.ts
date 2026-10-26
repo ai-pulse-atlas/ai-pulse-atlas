@@ -33,6 +33,8 @@ window.addEventListener('popstate', restore);
 const toggle = document.querySelector<HTMLInputElement>('#show-all')!;
 document.querySelector<HTMLElement>('#timeline-control')!.hidden = false;
 const points = [...document.querySelectorAll<SVGAElement>('.timeline-point')];
+document.querySelector('.lane-chart')!.classList.add('js-filterable');
+document.querySelector('#timeline-count')!.textContent = `当前显示 ${points.filter(p => ['S','A'].includes(p.dataset.impact!)).length} 条`;
 const panel = document.querySelector<HTMLElement>('#timeline-detail')!;
 const templates = new Map([...document.querySelectorAll<HTMLTemplateElement>('template[data-detail]')].map(t => [t.dataset.detail, t]));
 function show(point: SVGAElement) {

@@ -9,6 +9,13 @@ export interface EventRecord {
   [key: string]: unknown;
 }
 export const credibility = { official: '官方', confirmed: '媒体证实', rumor: '传闻' };
+export const statusLabels: Record<string, string> = {
+  announced: '已发布公告', preview: '预览/测试', rolling_out: '逐步推送中',
+  ga: '全面可用', completed: '已完成', withdrawn: '已撤回', ongoing: '进行中',
+};
+export function statusLabel(s?: string): string | undefined {
+  return s ? (Object.prototype.hasOwnProperty.call(statusLabels, s) ? statusLabels[s] : s) : undefined;
+}
 export const sourceTypes: Record<string, string> = { official: '官方', media: '媒体', community: '社区' };
 export function monday(date: string): string {
   const value = new Date(date.slice(0, 10) + 'T00:00:00Z');

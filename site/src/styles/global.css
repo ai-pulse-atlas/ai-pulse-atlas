@@ -254,7 +254,7 @@ p {
   stroke:var(--text);
   stroke-width:3
 }
-.lane-chart:not(.show-all) .timeline-point[data-impact=B],.lane-chart:not(.show-all) .timeline-point[data-impact=C] {
+.lane-chart.js-filterable:not(.show-all) .timeline-point[data-impact=B],.lane-chart.js-filterable:not(.show-all) .timeline-point[data-impact=C] {
   display:none
 }
 .timeline-detail {

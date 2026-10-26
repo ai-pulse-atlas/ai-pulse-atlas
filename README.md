@@ -2,7 +2,7 @@
 
 按影响力分级、可追溯官方来源的 AI 行业事件开放数据集与可视化。
 
-- 在线站点：<https://pulse.daowuu.work>（计划于 M1 上线，TODO：上线后确认）
+- 在线站点：<https://pulse.daowuu.work>
 - 仓库：<https://github.com/ai-pulse-atlas/ai-pulse-atlas>
 - 分级规则：[docs/grading.md](docs/grading.md)
 - 贡献方式：[CONTRIBUTING.md](CONTRIBUTING.md)（首发阶段只接受 Issue，暂不接受外部 PR）

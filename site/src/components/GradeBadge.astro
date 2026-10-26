@@ -1,0 +1,6 @@
+---
+import type { Grade } from '../lib/presentation';
+interface Props { grade: Grade }
+const { grade } = Astro.props;
+---
+<span class="badge" data-impact={grade}>{grade} 级</span>

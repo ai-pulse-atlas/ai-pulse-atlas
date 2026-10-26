@@ -1,20 +1,34 @@
 ---
 import Base from '../layouts/Base.astro';
-import { events, page } from '../lib/data';
-const orgs = [...new Set(events.flatMap(e => e.orgs))].sort();
-const categories = page.taxonomy.map(c => c.name);
+import Metrics from '../components/Metrics.astro';
+import Timeline from '../components/Timeline.astro';
+import EventCard from '../components/EventCard.astro';
+import { events, page, manifest } from '../lib/data';
+import { grades, monday, type ChartData } from '../lib/presentation';
+const dates = events.map(e=>e.event_date.slice(0,10)).sort();
+const first = dates[0]; const last = dates.at(-1);
+const categories: string[] = page.taxonomy.map(c=>c.name);
+const weeks: string[] = page.weeks.filter((w: string)=>last && w<=monday(last));
+const counts = new Map<string,number>();
+events.forEach(e=>new Set<string>(e.orgs).forEach(org=>counts.set(org,(counts.get(org)??0)+1)));
+const orgs = [...counts].sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'zh-CN'));
+const sorted = [...events].sort((a,b)=>b.event_date.slice(0,10).localeCompare(a.event_date.slice(0,10)) || grades.indexOf(a.impact)-grades.indexOf(b.impact) || a.id.localeCompare(b.id));
+const rows = page.taxonomy.flatMap(c=>c.subcategories.map((sub:string)=>({category:c.name,sub})));
+const weighted = (category:string,week:string,sub?:string) => events.filter(e=>e.category===category && monday(e.event_date)===week && (!sub || e.subcategory===sub)).reduce((sum,e)=>sum+page.weights[e.impact],0);
+const charts: ChartData = {categories,weeks,distribution:categories.map(c=>grades.map(g=>events.filter(e=>e.category===c && e.impact===g).length)),trend:categories.map(c=>weeks.map(w=>weighted(c,w))),heatRows:rows.map(r=>`${r.category} · ${r.sub}`),heat:rows.map(r=>weeks.map(w=>weighted(r.category,w,r.sub)))};
 ---
 <Base title="AI 行业事件图谱">
-<p class="eyebrow">AI INDUSTRY / OPEN DATA</p><h1>记录 AI 的变化，<br />看见影响力的走向。</h1><p class="intro">按影响力分级、可追溯官方来源的 AI 行业事件开放数据集与可视化</p>
-<p class="muted">统计窗口 {page.window.start} 至 {page.asof} · 周一为周起点 · 北京时间</p>
-<section class="metrics" aria-label="关键指标"><div class="metric">窗口内事件<strong>{page.metrics.total}</strong></div>{Object.entries(page.metrics.by_impact).map(([level, n]) => <div class="metric">{level} 级<strong>{n}</strong></div>)}<div class="metric">最热分类<strong>{page.metrics.hottest_category ?? '暂无'}</strong><small>按累计影响力指数</small></div></section>
-<section class="panel"><h2>分类 × 周热力图</h2><p class="muted">颜色表示事件数量，查看每一周的行业焦点。</p><div id="heatmap" class="chart" role="img" aria-label="分类每周事件数热力图"></div></section>
-<section class="panel"><h2>分类周影响力指数</h2><p class="muted">S × 8 + A × 4 + B × 2 + C × 1；各分类独立折线。</p><div id="trend" class="chart" role="img" aria-label="各分类每周影响力指数折线图"></div><details><summary>查看图表数据表（无需脚本）</summary><div class="table-scroll"><table><thead><tr><th>分类 / 周起点</th>{page.weeks.map(w => <th>{w}</th>)}</tr></thead><tbody>{categories.map(c => <tr><th>{c} · 指数</th>{page.agg.category_week_index[c].map(n => <td>{n}</td>)}</tr>)}{categories.map(c => <tr><th>{c} · 事件数</th>{page.weeks.map(w => <td>{Object.values(page.agg.category_impact_week[c]?.[w] ?? {}).reduce((a:number,b:number) => a+b,0)}</td>)}</tr>)}</tbody></table></div></details></section>
-<h2>事件时间线</h2><p>全量收录 {events.length} 条 · <a href="/data/events.jsonl">下载 JSONL</a></p>
-<form class="filters" id="filters" hidden role="search"><label>等级<select name="impact"><option value="">全部等级</option>{['S','A','B','C'].map(v => <option>{v}</option>)}</select></label><label>分类<select name="category"><option value="">全部分类</option>{categories.map(v => <option>{v}</option>)}</select></label><label>机构<select name="org"><option value="">全部机构</option>{orgs.map(v => <option>{v}</option>)}</select></label><label>关键词<input name="keyword" type="search" placeholder="搜索标题、摘要、模型" /></label></form><p id="results" aria-live="polite"></p>
-<ul class="timeline">{events.map(e => <li class="event" data-impact={e.impact} data-category={e.category} data-orgs={JSON.stringify(e.orgs)} data-search={[e.title,e.summary,...e.orgs,...(e.models ?? [])].join(' ').toLowerCase()}><div class="event-meta"><time datetime={e.event_date}>{e.event_date.slice(0,10)}</time><span class="badge" data-impact={e.impact}>{e.impact}</span><span>{e.category}</span></div><h3><a href={`/events/${e.id}/`}>{e.title}</a></h3><p>{e.summary}</p><small>{e.orgs.join(' · ')}</small></li>)}</ul>
-<script id="chart-data" type="application/json" set:html={JSON.stringify(page).replace(/</g,'\\u003c')} />
-<script>
-import '../lib/home';
-</script>
+  <section class="hero"><p class="eyebrow">AI INDUSTRY / OPEN DATA</p><h1>AI 行业事件图谱</h1><p class="intro">{first ?? '暂无事件'} 至 {page.asof}（北京时间）共收录 {events.length} 条来源确切的 AI 行业事件，按 7 大类和 S/A/B/C 四级影响力归档。</p><p class="muted">记录 AI 的变化，看见影响力的走向。</p><div class="report-meta"><span>实际事件日期 {first ?? '—'} — {last ?? '—'}</span><span>截至 {page.asof}</span><span>数据版本 {manifest.schema_version}</span></div></section>
+  <Metrics/><Timeline/>
+  <div class="chart-grid">
+    <section class="panel"><p class="eyebrow">02 / 结构分布</p><h2>分类 × 等级分布</h2><p class="muted">按等级堆叠，条形末端为分类事件总数。</p><div id="distribution" class="chart" role="img" aria-label="各分类 S A B C 级事件数量分布">图表加载后显示；完整数据见下方无需脚本的数据表。</div></section>
+    <section class="panel"><p class="eyebrow">03 / 每周趋势</p><h2>各分类每周影响力指数</h2><p class="muted">按等级加权求和；周一为一周起点。</p><div id="trend" class="chart" role="img" aria-label="各分类每周影响力指数折线图">图表加载后显示；完整数据见下方无需脚本的数据表。</div></section>
+  </div>
+  <section class="panel"><p class="eyebrow">04 / 细分观察</p><h2>子类 × 周影响力热力图</h2><p class="muted">S={page.weights.S}、A={page.weights.A}、B={page.weights.B}、C={page.weights.C}；浅灰表示 0，仅展示至最后一条事件所在周。</p><div class="table-scroll"><div id="heatmap" class="chart heat-chart" role="img" aria-label="各子类每周加权影响力热力图">图表加载后显示；完整数据见下方无需脚本的数据表。</div></div>
+  <details><summary>查看全部图表数据（无需脚本）</summary><div class="table-scroll"><table><caption>分类 × 等级事件条数</caption><thead><tr><th>分类</th>{grades.map(g=><th>{g} 级</th>)}<th>总计</th></tr></thead><tbody>{categories.map((c,i)=><tr><th>{c}</th>{charts.distribution[i].map(n=><td>{n}</td>)}<td>{charts.distribution[i].reduce((a,b)=>a+b,0)}</td></tr>)}</tbody></table><table><caption>分类与子类的每周影响力指数</caption><thead><tr><th>分类 / 周起点</th>{weeks.map(w=><th>{w}</th>)}</tr></thead><tbody>{[...categories,...charts.heatRows].map((label,i)=><tr><th>{label}</th>{[...charts.trend,...charts.heat][i].map(n=><td>{n}</td>)}</tr>)}</tbody></table></div></details></section>
+  <section aria-labelledby="events-heading"><div class="section-heading"><div><p class="eyebrow">05 / 事件档案</p><h2 id="events-heading">事件明细</h2></div><a href="/data/events.jsonl">下载 JSONL ↓</a></div><p class="muted">按日期倒序，同日按 S → C 排列。展开卡片查看定级依据与完整来源。</p>
+  <form class="filters" id="filters" hidden role="search"><label>等级<select name="impact"><option value="">全部等级</option><option value="SA">仅 S/A</option>{grades.map(g=><option value={g}>{g} 级</option>)}</select></label><label>分类<select name="category"><option value="">全部分类</option>{categories.map(c=><option>{c}</option>)}</select></label><label>机构<select name="org"><option value="">全部机构</option>{orgs.map(([org,n])=><option value={org}>{org}（{n}）</option>)}</select></label><label>关键词<input type="search" name="q" placeholder="标题、摘要、机构、子类、模型"/></label><button type="reset">重置</button></form><p id="results" aria-live="polite">显示 {events.length} 条事件</p><ul class="event-list">{sorted.map(e=><EventCard event={e}/>)}</ul></section>
+  <aside class="panel rules"><h2>收录与定级规则</h2><p>只收来源确切的事件，日期一律北京时间。仅媒体报道或匿名消息的事件，即使量级很大也最多定为 B 级；拿不准时降一级。</p><p>影响力指数＝等级加权求和（S=8、A=4、B=2、C=1）。<a href="/about/">了解完整规则与投稿方式 →</a></p></aside>
+  <script id="chart-data" type="application/json" set:html={JSON.stringify(charts).replace(/</g,'\\u003c')}/>
+  <script>import '../lib/home';</script>
 </Base>

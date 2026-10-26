@@ -22,4 +22,10 @@ export function monday(date: string): string {
   value.setUTCDate(value.getUTCDate() - (value.getUTCDay() + 6) % 7);
   return value.toISOString().slice(0, 10);
 }
-export interface ChartData { categories: string[]; weeks: string[]; distribution: number[][]; trend: number[][]; heatRows: string[]; heat: number[][] }
+export interface ChartData { categories: string[]; weeks: string[]; distribution: number[][]; trend: number[][]; heatRows: string[]; heat: number[][]; heatCategories: {category: string; sub: string}[]; heatEvents: Record<string, {count: number; titles: string[]}> }
+
+export const dateBasisLabels: Record<string, string> = {
+  official_bj: '官方公告（北京时间）', official_local: '官方公告（当地时间换算）',
+  hn_bj: 'Hacker News 首发（北京时间）', media_bj: '媒体报道（北京时间）',
+};
+export type FilterValues = Partial<Record<'impact' | 'category' | 'org' | 'q', string>>;

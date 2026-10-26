@@ -2,5 +2,7 @@
 import type { Grade } from '../lib/presentation';
 interface Props { grade: Grade }
 const { grade } = Astro.props;
+const meanings = { S: '头部厂商新一代旗舰、全行业级监管等', A: '重要版本、新一代芯片、主流产品重大功能等', B: '常规更新、有代表性的开源项目或论文等', C: '其余事件' };
+const description = `${grade} 级：${meanings[grade]}`;
 ---
-<span class="badge" data-impact={grade}>{grade} 级</span>
+<span class="badge" title={description} aria-label={description} data-impact={grade}>{grade} 级</span>

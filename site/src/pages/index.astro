@@ -15,7 +15,13 @@ const orgs = [...counts].sort((a,b)=>b[1]-a[1] || a[0].localeCompare(b[0],'zh-CN
 const sorted = [...events].sort((a,b)=>b.event_date.slice(0,10).localeCompare(a.event_date.slice(0,10)) || grades.indexOf(a.impact)-grades.indexOf(b.impact) || a.id.localeCompare(b.id));
 const rows = page.taxonomy.flatMap(c=>c.subcategories.map((sub:string)=>({category:c.name,sub})));
 const weighted = (category:string,week:string,sub?:string) => events.filter(e=>e.category===category && monday(e.event_date)===week && (!sub || e.subcategory===sub)).reduce((sum,e)=>sum+page.weights[e.impact],0);
-const charts: ChartData = {categories,weeks,distribution:categories.map(c=>grades.map(g=>events.filter(e=>e.category===c && e.impact===g).length)),trend:categories.map(c=>weeks.map(w=>weighted(c,w))),heatRows:rows.map(r=>`${r.category} · ${r.sub}`),heat:rows.map(r=>weeks.map(w=>weighted(r.category,w,r.sub)))};
+const heatEvents: ChartData['heatEvents'] = {};
+rows.forEach((r,y) => weeks.forEach((w,x) => {
+  const matches = events.filter(e => e.category === r.category && e.subcategory === r.sub && monday(e.event_date) === w)
+    .sort((a,b) => grades.indexOf(a.impact)-grades.indexOf(b.impact));
+  if (matches.length) heatEvents[`${x},${y}`] = {count:matches.length,titles:matches.slice(0,3).map(e=>e.title)};
+}));
+const charts: ChartData = {categories,weeks,heatCategories:rows,heatEvents,distribution:categories.map(c=>grades.map(g=>events.filter(e=>e.category===c && e.impact===g).length)),trend:categories.map(c=>weeks.map(w=>weighted(c,w))),heatRows:rows.map(r=>`${r.category} · ${r.sub}`),heat:rows.map(r=>weeks.map(w=>weighted(r.category,w,r.sub)))};
 ---
 <Base title="AI 行业事件图谱">
   <section class="hero"><p class="eyebrow">AI INDUSTRY / OPEN DATA</p><h1>AI 行业事件图谱</h1><p class="intro">{first ?? '暂无事件'} 至 {page.asof}（北京时间）共收录 {events.length} 条来源确切的 AI 行业事件，按 7 大类和 S/A/B/C 四级影响力归档。</p><p class="muted">记录 AI 的变化，看见影响力的走向。</p><div class="report-meta"><span>实际事件日期 {first ?? '—'} — {last ?? '—'}</span><span>截至 {page.asof}</span><span>数据版本 {manifest.schema_version}</span></div></section>

@@ -1,0 +1,12 @@
+---
+import { events, page } from '../lib/data';
+const levels = page.metrics.by_impact;
+const hot = page.metrics.hottest_category;
+const cards = [
+  ['事件总数', events.length, `官方来源 ${events.filter(e => e.verified === 'official').length} 条，其余为媒体或社区来源`],
+  ['S/A 级事件', (levels.S ?? 0) + (levels.A ?? 0), `S 级 ${levels.S ?? 0} 条，A 级 ${levels.A ?? 0} 条`],
+  ['最热分类', hot ?? '暂无', `影响力指数 ${page.metrics.index_by_category[hot] ?? 0}，共 ${page.metrics.by_category[hot] ?? 0} 条`],
+  ['B / C 级事件', `${levels.B ?? 0} / ${levels.C ?? 0}`, '非官方来源最高只能定为 B'],
+];
+---
+<section class="metrics" aria-label="关键指标">{cards.map(([label,value,note], i) => <div class="metric"><span class="metric-label">{label}</span><strong class:list={{'metric-word':i===2}}>{value}</strong><small>{note}</small></div>)}</section>

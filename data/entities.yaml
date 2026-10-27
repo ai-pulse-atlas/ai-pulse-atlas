@@ -8,6 +8,8 @@ orgs:
   xAI:         {tier: 1, region: US, aliases: [xai, Grok]}
   Microsoft:   {tier: 1, region: US, aliases: [microsoft, MSFT, Copilot]}
   NVIDIA:      {tier: 1, region: US, aliases: [Nvidia, nvidia, 英伟达]}
+  Broadcom:    {tier: 1, region: US, aliases: [AVGO, 博通]}
+  SpaceX:      {tier: 1, region: US, aliases: [SpaceXSI, "SpaceX AI", 太空探索技术公司]}
   DeepSeek:    {tier: 1, region: CN, aliases: [deepseek, 深度求索]}
   Alibaba:     {tier: 1, region: CN, aliases: [Qwen, 通义, 阿里, 阿里巴巴, 阿里云, "Alibaba Cloud"]}
   ByteDance:   {tier: 1, region: CN, aliases: [字节跳动, 字节, Doubao, 豆包, Seed]}
@@ -53,7 +55,7 @@ orgs:
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
 models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
-  "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1"]
+  "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]
   "Claude 5.5":       ["Claude Opus 5.5", "Claude Sonnet 5.5", "Claude Haiku 5.5", "Sonnet 5.5", "Haiku 5.5", "Opus 5.5"]
   "Gemini 4":         ["Gemini 4 Argon", "Gemini 4", "Gemini 4 Argon for Robotics"]
   "Nano Banana":      ["Nano Banana 2.1"]

@@ -50,6 +50,10 @@ orgs:
   "Flapping Airplanes": {tier: 3, region: US, aliases: []}
   ProjectDiscovery: {tier: 3, region: US, aliases: []}
   TypeSafe:    {tier: 3, region: US, aliases: ["TypeSafe AI"]}
+  Apple:       {tier: 3, region: US, aliases: [苹果]}
+  Oracle:      {tier: 3, region: US, aliases: [OCI, 甲骨文]}
+  Cerebras:    {tier: 3, region: US, aliases: ["Cerebras Systems"]}
+  "Ant Group": {tier: 2, region: CN, aliases: [inclusionAI, 蚂蚁, 蚂蚁集团, Ling]}
   "Sweden Government Offices": {tier: 3, region: EU, aliases: [Regeringskansliet, 瑞典政府办公厅]}
 
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
@@ -66,3 +70,6 @@ models:
   "Mistral Large":    ["Mistral Large 4"]
   "MiniMax M3":       ["MiniMax M3.1 Flash", "M3.1 Flash"]
   "Step 5":           ["Step 5 Preview"]
+  "Genie":            ["Genie 4"]
+  "LFM3":             ["LFM3-1.7B", "LFM3-VL-2B", "LFM3-Audio-2B", "LFM3-Omni-2B"]
+  "Ling-3.1":         ["Ling-3.1-flash-1019", "Ling-3.1-flash-base"]

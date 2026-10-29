@@ -54,6 +54,8 @@ orgs:
   Oracle:      {tier: 3, region: US, aliases: [OCI, 甲骨文]}
   Cerebras:    {tier: 3, region: US, aliases: ["Cerebras Systems"]}
   "Ant Group": {tier: 2, region: CN, aliases: [inclusionAI, 蚂蚁, 蚂蚁集团, Ling]}
+  NAVER:       {tier: 3, region: Global, aliases: [네이버, "NAVER Cloud"]}
+  Brookfield:  {tier: 3, region: Global, aliases: ["Brookfield Asset Management"]}
   "Sweden Government Offices": {tier: 3, region: EU, aliases: [Regeringskansliet, 瑞典政府办公厅]}
 
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
@@ -61,7 +63,7 @@ models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
   "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]
   "Claude 5.5":       ["Claude Opus 5.5", "Claude Sonnet 5.5", "Claude Haiku 5.5", "Sonnet 5.5", "Haiku 5.5", "Opus 5.5"]
-  "Gemini 4":         ["Gemini 4 Argon", "Gemini 4", "Gemini 4 Argon for Robotics"]
+  "Gemini 4":         ["Gemini 4 Argon", "Gemini 4", "Gemini 4 Argon for Robotics", "Gemini 4 Carbon"]
   "Nano Banana":      ["Nano Banana 2.1"]
   "Muse":             ["Muse Wonder", "Muse Spark", "Muse Spark Open"]
   "DeepSeek V4.1":    ["DeepSeek-V4.1-Flash", "DeepSeek-V4.1-Flash-1017", "V4.1-Flash"]

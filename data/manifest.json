@@ -11,12 +11,12 @@
     },
     {
       "path": "data/events/2026-10.jsonl",
-      "events": 85
+      "events": 91
     }
   ],
   "supporting_files": [
     "data/taxonomy.yaml",
     "data/entities.yaml"
   ],
-  "event_count": 93
+  "event_count": 99
 }

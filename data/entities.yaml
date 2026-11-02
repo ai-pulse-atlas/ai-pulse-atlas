@@ -57,6 +57,12 @@ orgs:
   NAVER:       {tier: 3, region: Global, aliases: [네이버, "NAVER Cloud"]}
   Brookfield:  {tier: 3, region: Global, aliases: ["Brookfield Asset Management"]}
   "Sweden Government Offices": {tier: 3, region: EU, aliases: [Regeringskansliet, 瑞典政府办公厅]}
+  Cohere:      {tier: 2, region: Global, aliases: ["Cohere AI"]}
+  Kuaishou:    {tier: 3, region: CN, aliases: [快手, Kling, 可灵, "Kling AI"]}
+  Amazon:      {tier: 3, region: US, aliases: [AWS, 亚马逊, "Amazon Web Services"]}
+  HUMAIN:      {tier: 3, region: Global, aliases: [Humain]}
+  "Saudi Aramco": {tier: 3, region: Global, aliases: [Aramco, 沙特阿美]}
+  Cursor:      {tier: 3, region: US, aliases: [Anysphere]}
 
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
 models:

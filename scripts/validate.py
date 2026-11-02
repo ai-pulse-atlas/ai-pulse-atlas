@@ -16,6 +16,8 @@ OPTIONAL = {"models", "region", "tags", "metrics", "related_ids", "status", "imp
 ID_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-[a-z0-9]+(?:-[a-z0-9]+)*$")
 TS_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?\+08:00$")
 URL_RE = re.compile(r"^https?://[^\s]+$")
+FULL_TS_RE = re.compile(r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+08:00$")
+CLOCK_SKEW = dt.timedelta(minutes=10)
 
 
 def norm_url(u):
@@ -80,6 +82,30 @@ def check_impact_history(ev) -> list[str]:
     return errors
 
 
+def check_record_times(ev, now=None) -> list[str]:
+    """created_at/updated_at 必须带秒（YYYY-MM-DDTHH:MM:SS+08:00），且不能晚于当前时间（容许 10 分钟时钟偏差）。"""
+    now = now or dt.datetime.now(dt.timezone.utc)
+    errors = []
+    tag = f"[{ev.get('id', '?')}]"
+    for field in ("created_at", "updated_at"):
+        if field not in ev:
+            continue
+        value = ev[field]
+        try:
+            if not isinstance(value, str) or not FULL_TS_RE.fullmatch(value):
+                raise ValueError
+            parsed = dt.datetime.fromisoformat(value)
+        except ValueError:
+            errors.append(f"{tag} {field} 必须是带秒的北京时间（YYYY-MM-DDTHH:MM:SS+08:00）：{value}")
+            continue
+        if parsed > now + CLOCK_SKEW:
+            errors.append(f"{tag} {field} 不能晚于当前时间（容许 10 分钟偏差）：{value}")
+    if not errors and "created_at" in ev and "updated_at" in ev:
+        if dt.datetime.fromisoformat(ev["updated_at"]) < dt.datetime.fromisoformat(ev["created_at"]):
+            errors.append(f"{tag} updated_at 不能早于 created_at")
+    return errors
+
+
 def main():
     strict = "--strict" in sys.argv
     checker = FormatChecker()
@@ -106,6 +132,7 @@ def main():
             errors.append(f"{where} JSON 解析失败：{exc}"); continue
         if isinstance(ev, dict):
             errors.extend(f"{where} {error}" for error in check_impact_history(ev))
+            errors.extend(f"{where} {error}" for error in check_record_times(ev))
         schema_errors = list(validator.iter_errors(ev))
         if schema_errors:
             for error in schema_errors:

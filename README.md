@@ -62,7 +62,7 @@ site/                       # 展示站（Astro + ECharts）
 - `orgs`：机构标准名（见 `data/entities.yaml`）
 - `sources`：`[{url, publisher, type}]`，`type` 取 `official` / `media` / `community`
 - `verified`：`official` / `confirmed` / `rumor`
-- `created_at`、`updated_at`：`YYYY-MM-DDTHH:MM+08:00`
+- `created_at`、`updated_at`：`YYYY-MM-DDTHH:MM:SS+08:00`（必须带秒，且不能晚于当前时间，容许 10 分钟偏差；`updated_at` 不早于 `created_at`）
 
 可选：`models`、`product`、`region`（US/CN/EU/Global）、`tags`、`metrics`、`related_ids`、`status`、`impact_history`、`date_basis`、`note`。
 

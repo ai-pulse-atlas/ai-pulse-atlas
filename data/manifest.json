@@ -11,16 +11,16 @@
     },
     {
       "path": "data/events/2026-10.jsonl",
-      "events": 98
+      "events": 101
     },
     {
       "path": "data/events/2026-11.jsonl",
-      "events": 2
+      "events": 4
     }
   ],
   "supporting_files": [
     "data/taxonomy.yaml",
     "data/entities.yaml"
   ],
-  "event_count": 108
+  "event_count": 113
 }

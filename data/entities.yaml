@@ -63,6 +63,7 @@ orgs:
   HUMAIN:      {tier: 3, region: Global, aliases: [Humain]}
   "Saudi Aramco": {tier: 3, region: Global, aliases: [Aramco, 沙特阿美]}
   Cursor:      {tier: 3, region: US, aliases: [Anysphere]}
+  SemiAnalysis: {tier: 3, region: US, aliases: ["Semi Analysis"]}
 
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
 models:

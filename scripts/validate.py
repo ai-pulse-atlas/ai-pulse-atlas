@@ -9,8 +9,6 @@ from common import ROOT
 from collections import defaultdict
 from common import load_taxonomy, load_entities, org_alias_map, model_alias_map, iter_events
 
-REQUIRED = ["id", "event_date", "title", "summary", "category", "subcategory", "impact",
-            "impact_reason", "orgs", "sources", "verified", "created_at", "updated_at"]
 OPTIONAL = {"models", "region", "tags", "metrics", "related_ids", "status", "impact_history",
             "product", "date_basis", "note", "submitted_by"}
 ID_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})-[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -106,15 +104,15 @@ def check_record_times(ev, now=None) -> list[str]:
     return errors
 
 
-def main():
-    strict = "--strict" in sys.argv
+def validate_track(track="events"):
+    """独立校验一条数据线，引用与去重不会跨线。"""
     checker = FormatChecker()
     @checker.checks("beijing-time", raises=ValueError)
     def beijing_time(value):
         if not isinstance(value, str):
             return True
         return dt.datetime.fromisoformat(value).utcoffset() == dt.timedelta(hours=8)
-    schema = json.loads((ROOT / "schema/event.schema.json").read_text())
+    schema = json.loads((ROOT / ("schema/tech-event.schema.json" if track == "tech" else "schema/event.schema.json")).read_text())
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema, format_checker=checker)
     tax = load_taxonomy(); ent = load_entities()
@@ -126,8 +124,8 @@ def main():
     ids, urls = {}, {}
     events = []
 
-    for f, ln, ev, exc in iter_events():
-        where = f"{f.name}:{ln}"
+    for f, ln, ev, exc in iter_events(track):
+        where = f"data/{track}/{f.name}:{ln}"
         if exc:
             errors.append(f"{where} JSON 解析失败：{exc}"); continue
         if isinstance(ev, dict):
@@ -141,11 +139,12 @@ def main():
             continue
         eid = ev.get("id", "?")
         tag = f"{where} [{eid}]"
-        for k in REQUIRED:
+        required = schema["required"]
+        for k in required:
             if k not in ev or ev[k] in (None, "", []):
                 errors.append(f"{tag} 缺少必填字段 {k}")
         for k in ev:
-            if k not in REQUIRED and k not in OPTIONAL:
+            if k not in required and k not in OPTIONAL:
                 errors.append(f"{tag} 未知字段 {k}")
         m = ID_RE.match(str(ev.get("id", "")))
         if not m:
@@ -156,7 +155,7 @@ def main():
             if m and m.group(1) != ed[:10]:
                 errors.append(f"{tag} id 日期与 event_date 不一致")
             if f.stem != ed[:7]:
-                errors.append(f"{tag} 应存放在 data/events/{ed[:7]}.jsonl")
+                errors.append(f"{tag} 应存放在 data/{track}/{ed[:7]}.jsonl")
         except ValueError:
             errors.append(f"{tag} event_date 不是 YYYY-MM-DD（北京时间）"); d = None
         if len(ed) > 10 and not TS_RE.match(ed):
@@ -165,9 +164,9 @@ def main():
             if k in ev and not TS_RE.match(str(ev[k])):
                 errors.append(f"{tag} {k} 必须是 ISO 时间且时区 +08:00")
         cat, sub = ev.get("category"), ev.get("subcategory")
-        if cat not in cats:
+        if track == "events" and cat not in cats:
             errors.append(f"{tag} category 非法：{cat}")
-        elif sub not in cats[cat]:
+        elif track == "events" and sub not in cats[cat]:
             errors.append(f"{tag} subcategory「{sub}」不属于「{cat}」")
         if ev.get("impact") not in en["impact"]:
             errors.append(f"{tag} impact 非法：{ev.get('impact')}")
@@ -243,12 +242,21 @@ def main():
                 if not linked:
                     warns.append(f"{t2} 疑似重复：与 {e1['id']} 同为 {o}/{p}，相差 {(d2-d1).days} 天（若确为不同事件，请互相写入 related_ids）")
 
+    return errors, warns, len(events)
+
+
+def main():
+    errors, warns, count = [], [], 0
+    for track in ("events", "tech"):
+        track_errors, track_warns, total = validate_track(track)
+        errors.extend(track_errors); warns.extend(track_warns); count += total
+        print(f"{track}：{total} 条事件")
     for w in warns:
         print("WARN ", w)
     for e in errors:
         print("ERROR", e)
-    print(f"\n共 {len(events)} 条事件；错误 {len(errors)}；告警 {len(warns)}")
-    sys.exit(1 if errors or (strict and warns) else 0)
+    print(f"\n共 {count} 条事件；错误 {len(errors)}；告警 {len(warns)}")
+    sys.exit(1 if errors or ("--strict" in sys.argv and warns) else 0)
 
 
 if __name__ == "__main__":

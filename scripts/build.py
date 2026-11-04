@@ -14,7 +14,25 @@ def week_start(d):
     return d - dt.timedelta(days=d.weekday())
 
 
+def build_tech():
+    """技术导出包含全部月份，不参与 AI 聚合。空目录和缺失目录均有效。"""
+    records = []
+    for f, ln, ev, exc in iter_events("tech"):
+        if exc:
+            sys.exit(f"{f.name}:{ln} 解析失败，请先运行 validate.py")
+        records.append(ev)
+    records.sort(key=lambda e: (e["event_date"], e["id"]), reverse=True)
+    months = Counter(e["event_date"][:7] for e in records)
+    manifest = json.loads((ROOT / "data/manifest.json").read_text(encoding="utf-8"))
+    manifest["tech"] = {"event_count": len(records), "months": dict(sorted(months.items()))}
+    (ROOT / "build").mkdir(exist_ok=True)
+    for name, value in (("tech.json", records), ("manifest.json", manifest)):
+        (ROOT / "build" / name).write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"技术：{len(records)} 条事件，{len(months)} 个月")
+
+
 def main():
+    build_tech()
     asof = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).date()
     if "--asof" in sys.argv:
         asof = dt.date.fromisoformat(sys.argv[sys.argv.index("--asof") + 1])

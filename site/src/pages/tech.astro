@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import GradeBadge from '../components/GradeBadge.astro';
+import { techEvents } from '../lib/data';
+import { grades, credibility, sourceTypes } from '../lib/presentation';
+const categories = {
+  'devtools-infra': '开发工具与基础设施', 'open-source': '重要开源项目与发布',
+  release: '框架、语言与运行时发布', 'eng-practice': '工程实践与博客',
+  security: '安全事件、漏洞与产品', platform: '平台与生态开放',
+};
+const months = [...new Set<string>(techEvents.map(e => e.event_date.slice(0, 7)))].sort().reverse();
+const sorted = [...techEvents].sort((a,b) => b.event_date.localeCompare(a.event_date) || grades.indexOf(a.impact)-grades.indexOf(b.impact) || a.id.localeCompare(b.id));
+---
+<Base title="技术" description="面向工程师与开发者的技术事件，按分类、等级和月份查看。">
+  <section class="panel"><h1>技术</h1><p>面向工程师与开发者，记录工具、开源、版本发布、工程实践、安全与平台生态。</p><a href="/data/tech.json">下载技术数据 JSON ↓</a></section>
+  <section aria-labelledby="tech-heading"><div class="section-heading"><h2 id="tech-heading">技术事件</h2></div>
+    <form class="filters" id="tech-filters" hidden role="search">
+      <label>分类<select name="category"><option value="">全部分类</option>{Object.entries(categories).map(([key,label]) => <option value={key}>{label}</option>)}</select></label>
+      <label>等级<select name="impact"><option value="">全部等级</option><option value="SA">仅 S/A</option>{grades.map(g => <option value={g}>{g} 级</option>)}</select></label>
+      <label>月份<select name="month"><option value="">全部月份</option>{months.map(m => <option value={m}>{m.replace('-', ' 年 ')} 月</option>)}</select></label>
+      <button type="reset">重置</button>
+    </form>
+    <p id="tech-results" aria-live="polite">{sorted.length ? `显示 ${sorted.length} 条技术事件` : '暂无技术事件，收录后将在这里展示。'}</p>
+    <ul class="event-list">{sorted.map(e => <li id={'e-'+e.id} class="event" data-category={e.tech_category} data-impact={e.impact} data-month={e.event_date.slice(0,7)}>
+      <div class="event-meta"><time datetime={e.event_date}>{e.event_date.slice(0,10)}</time><GradeBadge grade={e.impact}/><span>{categories[e.tech_category]}</span></div>
+      <h3><a href={'#e-'+e.id}>{e.title}</a></h3><p>{e.summary}</p>
+      <div class="event-meta muted"><span>{e.orgs.join('、')}</span><span>{credibility[e.verified]}</span></div>
+      <details><summary>定级理由与完整记录</summary><div class="record"><dl><dt>定级理由</dt><dd>{e.impact_reason}</dd><dt>全部来源</dt><dd><ul>{e.sources.map(s => <li><a href={s.url} target="_blank" rel="noopener nofollow">{s.publisher} ↗</a> · {sourceTypes[s.type]}</li>)}</ul></dd>
+      {e.related_ids?.length > 0 && <><dt>相关事件</dt><dd>{e.related_ids.map(id => <a href={'#e-'+id}>{id} </a>)}</dd></>}
+      {e.impact_history?.length > 0 && <><dt>分级调整记录</dt><dd><ul>{e.impact_history.map(h => <li>{h.at} · {h.from} → {h.to}：{h.reason}</li>)}</ul></dd></>}
+      </dl></div></details>
+    </li>)}</ul>
+  </section>
+  <aside class="panel rules"><h2>收录与投稿</h2><p>沿用 S/A/B/C 分级，依据开发者覆盖、生态采用与安全严重度判断；非官方确认最高 B，拿不准降一级。<a href="/about/">查看投稿方式 →</a></p></aside>
+  <script>
+    const form = document.querySelector<HTMLFormElement>('#tech-filters')!;
+    const fields = ['category', 'impact', 'month'];
+    const control = (name: string) => form.elements.namedItem(name) as HTMLSelectElement;
+    const items = [...document.querySelectorAll<HTMLElement>('.event-list .event')];
+    function filter(sync = true) {
+      let count = 0;
+      items.forEach(item => {
+        const match = fields.every(name => !control(name).value || (name === 'impact' && control(name).value === 'SA' ? ['S','A'].includes(item.dataset.impact!) : item.dataset[name] === control(name).value));
+        item.hidden = !match; if (match) count++;
+      });
+      document.querySelector('#tech-results')!.textContent = !items.length ? '暂无技术事件，收录后将在这里展示。' : count ? `显示 ${count} 条技术事件` : '没有符合条件的技术事件，请调整筛选。';
+      if (sync) {
+        const url = new URL(location.href);
+        fields.forEach(name => control(name).value ? url.searchParams.set(name, control(name).value) : url.searchParams.delete(name));
+        history.replaceState(null, '', url.pathname + url.search + url.hash);
+      }
+    }
+    function restore() {
+      const query = new URLSearchParams(location.search);
+      fields.forEach(name => { control(name).value = query.get(name) ?? ''; }); filter(false);
+    }
+    restore(); form.hidden = false;
+    form.addEventListener('submit', e => e.preventDefault());
+    form.addEventListener('input', () => filter());
+    form.addEventListener('reset', () => { fields.forEach(name => { control(name).value = ''; }); filter(); });
+    window.addEventListener('popstate', restore);
+  </script>
+</Base>

@@ -44,7 +44,7 @@
 
 ## 提交 PR 时（M2 起）
 
-- 只改 `data/events/` 下一个月份文件。
+- 只改 `data/events/` 或 `data/tech/` 下一个月份文件；技术投稿规则见下文。
 - 本地运行 `python3 scripts/validate.py --strict`，零错误、零告警。
 - 来源为官方，或已注明 `verified` 与 `publisher`。
 - CI 会检查：`validate.py --strict` 与 JSON Schema 校验、id 唯一、URL 归一化去重、±3 天疑似重复（WARN，由维护者确认）、文本长度、防泄漏检查。暂未启用链接可达性检查。
@@ -54,3 +54,14 @@
 
 - 数据目录 `data/` 与 `docs/grading.md` 由 CODEOWNERS 指定的 Owner 最终裁决。Owner 为 @Daowuu。
 - 每日数据由自动化账号提交到 main，提交信息带 `[bot]` 前缀；它可以分诊 Issue、给出建议分级，但不合并外部 PR。
+
+## 技术事件投稿
+
+当前同样只接受 Issue：通过「新事件」表单，在补充说明中标明「技术」、`tech_category`、建议等级与依据。
+提供自写中文标题和摘要、北京时间日期、机构标准名及 HTTPS 官方来源；分类列表见 README，定级见 grading.md「技术」。
+维护者将记录写入 `data/tech/YYYY-MM.jsonl`，沿用 `event_date/impact/orgs` 等通用字段，
+以必填 `tech_category` 替代 `category/subcategory`。`created_at/updated_at` 必须为带秒的 `+08:00` 时间。
+实体沿用 `data/entities.yaml`；新机构先提实体建议。相关事件只引用同一数据线的 id。
+M2 开放外部 PR 后，可修改 `data/events/` 或 `data/tech/` 中一个月份文件，不能混放。
+运行 `python3 scripts/validate.py --strict` 和 `python3 -m unittest discover -s tests -v`；两条数据线须同时通过。
+不要把测试样例或采集脚本提交到数据目录，暂无技术条目时保持目录缺失即可。

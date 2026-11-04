@@ -107,3 +107,28 @@ npm run build                                # 会先自动运行 ../scripts/bui
 ## 安全与下架
 
 安全问题、权利人下架请求和行为准则举报，一律通过 GitHub 私密漏洞报告提交：<https://github.com/ai-pulse-atlas/ai-pulse-atlas/security>（Security → Report a vulnerability），详见 [SECURITY.md](SECURITY.md)。请勿公开提交 Issue。
+
+## 技术模块
+
+`/tech/` 面向工程师与开发者，与首页 AI 动态分开展示，支持分类、等级、月份筛选。
+技术记录放在 `data/tech/YYYY-MM.jsonl`；尚无数据时无需创建目录，构建和页面均支持空状态。
+不包含种子条目或采集代码，数据采集由 Tech Pulse 单独负责。
+
+字段沿用现有命名：日期为 `event_date`、等级为 `impact`、实体为 `orgs`，其余通用必填及可选字段同上。
+技术记录用必填单选 `tech_category` **替代** AI 的 `category/subcategory`，不使用 `date/level/entities` 别名。
+
+| tech_category | 中文分类 |
+|---|---|
+| devtools-infra | 开发工具与基础设施 |
+| open-source | 重要开源项目与开源发布 |
+| release | 框架、语言、运行时版本发布 |
+| eng-practice | 大厂工程实践与工程博客 |
+| security | 安全事件、漏洞、安全产品 |
+| platform | 平台与生态开放 |
+
+技术 schema 为 `schema/tech-event.schema.json`，来源必须为 HTTPS，时间必须带秒及 `+08:00`。
+`python3 scripts/validate.py --strict` 同时校验两条数据线，各自检查 id、来源去重与 `related_ids`（仅允许同线引用）。
+`python3 -m unittest discover -s tests -v` 运行测试，虚构样例仅存在于测试目录和测试临时目录。
+`python3 scripts/build.py` 新增生成 `build/tech.json`、`build/manifest.json`；站点发布为 `/data/tech.json` 和 `/data/manifest.json`。
+构建 manifest 的 `tech.event_count` 为全量条数，`tech.months` 为月份到条数的映射；空数据时分别为 `0` 和 `{}`。
+`data/manifest.json` 保留数据集元信息，构建时重新统计技术段，不修改源文件。AI 的 `/data/events.json` 不混入技术记录。

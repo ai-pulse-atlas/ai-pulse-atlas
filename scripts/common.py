@@ -2,7 +2,6 @@
 import json, pathlib, yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-EVENTS_DIR = ROOT / "data" / "events"
 
 
 def load_taxonomy():
@@ -31,9 +30,11 @@ def model_alias_map(ent):
     return m
 
 
-def iter_events():
-    """逐行产出 (文件路径, 行号, 原始文本, 解析结果或异常)。"""
-    for f in sorted(EVENTS_DIR.glob("*.jsonl")):
+def iter_events(track="events"):
+    """逐行产出 (文件路径, 行号, 解析结果, 异常)；缺失目录视为空。"""
+    if track not in ("events", "tech"):
+        raise ValueError(f"未知数据线：{track}")
+    for f in sorted((ROOT / "data" / track).glob("*.jsonl")):
         for i, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
             if not line.strip():
                 continue

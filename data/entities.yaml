@@ -51,6 +51,7 @@ orgs:
   ProjectDiscovery: {tier: 3, region: US, aliases: []}
   TypeSafe:    {tier: 3, region: US, aliases: ["TypeSafe AI"]}
   Apple:       {tier: 3, region: US, aliases: [苹果]}
+  CrowdStrike: {tier: 3, region: US, aliases: [CRWD, "Falcon Guardian"]}
   Oracle:      {tier: 3, region: US, aliases: [OCI, 甲骨文]}
   Cerebras:    {tier: 3, region: US, aliases: ["Cerebras Systems"]}
   "Ant Group": {tier: 2, region: CN, aliases: [inclusionAI, 蚂蚁, 蚂蚁集团, Ling]}

@@ -22,5 +22,9 @@
     "data/taxonomy.yaml",
     "data/entities.yaml"
   ],
-  "event_count": 113
+  "event_count": 113,
+  "tech": {
+    "event_count": 0,
+    "months": {}
+  }
 }

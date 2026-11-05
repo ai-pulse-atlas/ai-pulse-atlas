@@ -65,6 +65,16 @@ orgs:
   "Saudi Aramco": {tier: 3, region: Global, aliases: [Aramco, 沙特阿美]}
   Cursor:      {tier: 3, region: US, aliases: [Anysphere]}
   SemiAnalysis: {tier: 3, region: US, aliases: ["Semi Analysis"]}
+  Fal:         {tier: 3, region: US, aliases: [fal.ai]}
+  "Deep Principle": {tier: 3, region: CN, aliases: [深度原理]}
+  Postman:     {tier: 3, region: US, aliases: []}
+  "MIT CSAIL": {tier: 3, region: US, aliases: [MIT]}
+  "Pierre Computer Company": {tier: 3, region: US, aliases: [Pierre, "Code Storage"]}
+  Conductor:   {tier: 3, region: US, aliases: []}
+  "Riot Platforms": {tier: 3, region: US, aliases: [Riot]}
+  TeraWulf:    {tier: 3, region: US, aliases: [WULF]}
+  WordPress:   {tier: 3, region: Global, aliases: [WordPress.org]}
+  Go:          {tier: 3, region: Global, aliases: [Golang]}
 
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
 models:

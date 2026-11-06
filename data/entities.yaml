@@ -77,6 +77,10 @@ orgs:
   Go:          {tier: 3, region: Global, aliases: [Golang]}
 
 # 模型系列别名：去重时 product = 规范化后的模型/产品名
+  Baidu:       {tier: 2, region: CN, aliases: [百度, ERNIE, 文心]}
+  METR:        {tier: 3, region: US, aliases: []}
+  "Thinking Machines": {tier: 3, region: US, aliases: ["Thinking Machines Lab", Tinker]}
+  "Alpine Linux": {tier: 3, region: Global, aliases: [Alpine]}
 models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
   "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]

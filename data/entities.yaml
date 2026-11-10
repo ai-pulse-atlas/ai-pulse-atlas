@@ -84,13 +84,17 @@ orgs:
   Ricursive:   {tier: 3, region: US, aliases: ["Ricursive Intelligence", RicursiveAI]}
   SonicWall:   {tier: 3, region: US, aliases: []}
   Ghostty:     {tier: 3, region: Global, aliases: [libghostty, "Mitchell Hashimoto"]}
+  "Epic Games": {tier: 3, region: US, aliases: [Epic, "Unreal Engine"]}
+  OpenSSH:     {tier: 3, region: Global, aliases: [OpenBSD, openssh-portable]}
+  GPUStack:    {tier: 3, region: CN, aliases: [gpustack]}
+  OnePWR:      {tier: 3, region: US, aliases: ["OnePWR Solutions"]}
 models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
   "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]
   "Claude 5.5":       ["Claude Opus 5.5", "Claude Sonnet 5.5", "Claude Haiku 5.5", "Sonnet 5.5", "Haiku 5.5", "Opus 5.5"]
   "Gemini 4":         ["Gemini 4 Argon", "Gemini 4", "Gemini 4 Argon for Robotics", "Gemini 4 Carbon"]
   "Nano Banana":      ["Nano Banana 2.1"]
-  "Muse":             ["Muse Wonder", "Muse Spark", "Muse Spark Open"]
+  "Muse":             ["Muse Wonder", "Muse Spark", "Muse Spark Open", "Muse Ember"]
   "DeepSeek V4.1":    ["DeepSeek-V4.1-Flash", "DeepSeek-V4.1-Flash-1017", "V4.1-Flash"]
   "Qwen-Image":       ["Qwen-Image-2.1-Pro", "Qwen-Image-2.1-Turbo"]
   "Kimi K3":          ["Kimi K3", "Kimi K3.1 Pro"]
@@ -102,3 +106,5 @@ models:
   "Ling-3.2":         ["Ling-3.2-flash"]
   "Ripple":           ["Ripple-65B Preview", "Ripple-65B"]
   "Ling-3.1":         ["Ling-3.1-flash-1019", "Ling-3.1-flash-base"]
+  "Claude Fable":     ["Claude Fable 5.2", "Claude Mythos 5.2", "Fable 5.2", "Mythos 5.2"]
+  "Seedream":         ["Seedream 5.5"]

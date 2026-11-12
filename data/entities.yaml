@@ -93,6 +93,8 @@ orgs:
   Git:         {tier: 3, region: Global, aliases: ["Git project", git-scm]}
   GitHub:      {tier: 3, region: US, aliases: [github]}
   Barracuda:   {tier: 3, region: US, aliases: ["Barracuda Networks"]}
+  Runway:      {tier: 3, region: US, aliases: ["Runway ML", RunwayML]}
+  DeepL:       {tier: 3, region: EU, aliases: [deepl]}
 models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
   "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]
@@ -114,3 +116,8 @@ models:
   "Ling-3.1":         ["Ling-3.1-flash-1019", "Ling-3.1-flash-base"]
   "Claude Fable":     ["Claude Fable 5.2", "Claude Mythos 5.2", "Fable 5.2", "Mythos 5.2"]
   "Seedream":         ["Seedream 5.5"]
+  "Qwen4":          ["Qwen4-Max-Preview", "Qwen4-Max", "qwen4-max-preview"]
+  "Gemini Decision": ["Gemini Decision 1", "gemini-decision-1"]
+  "Praxis":         ["Praxis-1"]
+  "AlphaGenome":    ["AlphaGenome 2"]
+  "Gemini Robotics": ["Gemini Robotics 2.5"]

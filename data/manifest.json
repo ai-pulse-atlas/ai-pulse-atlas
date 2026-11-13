@@ -15,19 +15,19 @@
     },
     {
       "path": "data/events/2026-11.jsonl",
-      "events": 62
+      "events": 67
     }
   ],
   "supporting_files": [
     "data/taxonomy.yaml",
     "data/entities.yaml"
   ],
-  "event_count": 171,
+  "event_count": 176,
   "tech": {
-    "event_count": 19,
+    "event_count": 21,
     "months": {
       "2026-10": 1,
-      "2026-11": 18
+      "2026-11": 20
     }
   }
 }

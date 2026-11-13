@@ -95,12 +95,14 @@ orgs:
   Barracuda:   {tier: 3, region: US, aliases: ["Barracuda Networks"]}
   Runway:      {tier: 3, region: US, aliases: ["Runway ML", RunwayML]}
   DeepL:       {tier: 3, region: EU, aliases: [deepl]}
+  Apache:      {tier: 3, region: Global, aliases: ["Apache Software Foundation", "Apache HTTP Server", httpd]}
+  Rust:        {tier: 3, region: Global, aliases: ["Rust Project", "Rust Language", rust-lang]}
 models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
   "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]
   "Claude 5.5":       ["Claude Opus 5.5", "Claude Sonnet 5.5", "Claude Haiku 5.5", "Sonnet 5.5", "Haiku 5.5", "Opus 5.5"]
   "Alpamayo":         ["Alpamayo 2 Edge", "Alpamayo2-Edge"]
-  "Gemini 4":         ["Gemini 4 Argon", "Gemini 4", "Gemini 4 Argon for Robotics", "Gemini 4 Carbon"]
+  "Gemini 4":         ["Gemini 4 Argon", "Gemini 4", "Gemini 4 Argon for Robotics", "Gemini 4 Carbon", "Gemini 4 Hydrogen"]
   "Nano Banana":      ["Nano Banana 2.1"]
   "Muse":             ["Muse Wonder", "Muse Spark", "Muse Spark Open", "Muse Ember"]
   "DeepSeek V4.1":    ["DeepSeek-V4.1-Flash", "DeepSeek-V4.1-Flash-1017", "V4.1-Flash"]
@@ -108,6 +110,7 @@ models:
   "Kimi K3":          ["Kimi K3", "Kimi K3.1 Pro"]
   "Mistral Large":    ["Mistral Large 4"]
   "MiniMax M3":       ["MiniMax M3.1 Flash", "M3.1 Flash"]
+  "MiniMax H3":       ["MiniMax H3-Image", "H3-Image"]
   "Step 5":           ["Step 5 Preview"]
   "Genie":            ["Genie 4"]
   "LFM3":             ["LFM3-1.7B", "LFM3-VL-2B", "LFM3-Audio-2B", "LFM3-Omni-2B"]

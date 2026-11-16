@@ -97,6 +97,9 @@ orgs:
   DeepL:       {tier: 3, region: EU, aliases: [deepl]}
   Apache:      {tier: 3, region: Global, aliases: ["Apache Software Foundation", "Apache HTTP Server", httpd]}
   Rust:        {tier: 3, region: Global, aliases: ["Rust Project", "Rust Language", rust-lang]}
+  Meituan:     {tier: 3, region: CN, aliases: [美团, LongCat, "Meituan LongCat"]}
+  ggml:        {tier: 3, region: Global, aliases: ["ggml-org", GGML]}
+  "Check Point": {tier: 3, region: Global, aliases: [CheckPoint, "Check Point Software"]}
 models:
   "GPT-6":            [GPT-6, "GPT-6 Sol", "GPT-6 Astra", "GPT-6 Luna"]
   "GPT-6.1":          ["GPT-6.1 Sol", "GPT-6.1 Terra", "GPT-6.1"]
@@ -124,3 +127,4 @@ models:
   "Praxis":         ["Praxis-1"]
   "AlphaGenome":    ["AlphaGenome 2"]
   "Gemini Robotics": ["Gemini Robotics 2.5"]
+  "LongCat":         ["LongCat-2.5", "LongCat 2.5"]
